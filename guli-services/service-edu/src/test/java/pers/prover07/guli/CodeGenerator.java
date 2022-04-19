@@ -1,16 +1,16 @@
-# 项目介绍
+package pers.prover07.guli;
 
-简介：基于 **B2C** 商业模式，采用 **SpringCloud + Vue** 的前后端分离开发模式，使用 **git** 作为版本管理工具，并使用 **jenkins + docker** 实现**微服务集群部署**的在线教育平台 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import org.junit.Test;
 
-仓库地址：
-
-技术点：
-
-# 后端
-
-## 使用 MP 代码生成器生成代码
-
-```java
 public class CodeGenerator {
     @Test
     public void main1() {
@@ -22,8 +22,8 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         System.out.println(projectPath);
-        gc.setOutputDir("微服务模块文件夹路径" + "/src/main/java");
-        gc.setAuthor("作者名");
+        gc.setOutputDir("D:\\StudyCode\\Project\\guli-parent\\guli-services\\service-edu" + "/src/main/java");
+        gc.setAuthor("小丶木曾义仲丶哈牛柚子露丶蛋卷");
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖
         /*
@@ -39,7 +39,7 @@ public class CodeGenerator {
 
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/guli?serverTimezone=GMT%2B8"); //数据库连接
+        dsc.setUrl("jdbc:mysql://localhost:3306/guli?serverTimezone=GMT%2B8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");
@@ -48,7 +48,7 @@ public class CodeGenerator {
 
         // 4、包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("pers.prover07.guli");   // 包名 = parent + moduleName
+        pc.setParent("pers.prover07.guli");
         pc.setModuleName("edu"); //模块名
         pc.setController("controller");
         pc.setEntity("entity");
@@ -58,7 +58,7 @@ public class CodeGenerator {
 
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("edu_teacher"); // 要生成数据文件的表
+        strategy.setInclude("edu_teacher");
         strategy.setNaming(NamingStrategy.underline_to_camel);  //数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀
 
@@ -74,13 +74,3 @@ public class CodeGenerator {
         mpg.execute();
     }
 }
-```
-
-# 前端
-
-# 其他
-
-
-
-
-
