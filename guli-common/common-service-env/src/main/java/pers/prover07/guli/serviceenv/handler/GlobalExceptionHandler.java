@@ -3,6 +3,7 @@ package pers.prover07.guli.serviceenv.handler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import pers.prover07.guli.serviceenv.exception.GuliException;
 import pers.prover07.guli.utils.Result;
 
 /**
@@ -18,5 +19,11 @@ public class GlobalExceptionHandler {
     public Result handleException(Exception exception) {
         log.error("出现了新的全局异常: {}", exception.getMessage());
         return Result.falid();
+    }
+
+    @ExceptionHandler(GuliException.class)
+    public Result handleGuliException(GuliException exception) {
+        log.warn("出现了业务异常: {}", exception.getMessage());
+        return Result.falid().code(exception.getCode()).message(exception.getMessage());
     }
 }

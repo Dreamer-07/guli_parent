@@ -1,111 +1,3 @@
-# 项目介绍
-
-简介：基于 **B2C** 商业模式，采用 **SpringCloud + Vue** 的前后端分离开发模式，使用 **git** 作为版本管理工具，并使用 **jenkins + docker** 实现**微服务集群部署**的在线教育平台 
-
-仓库地址：
-
-技术点：
-
-# 后端
-
-## 使用 MP 代码生成器生成代码
-
-```java
-public class CodeGenerator {
-    @Test
-    public void main1() {
-
-        // 1、创建代码生成器
-        AutoGenerator mpg = new AutoGenerator();
-
-        // 2、全局配置
-        GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
-        System.out.println(projectPath);
-        gc.setOutputDir("微服务模块文件夹路径" + "/src/main/java");
-        gc.setAuthor("作者名");
-        gc.setOpen(false); //生成后是否打开资源管理器
-        gc.setFileOverride(false); //重新生成时文件是否覆盖
-        /*
-         * mp生成service层代码，默认接口名称第一个字母有 I
-         * UcenterService
-         * */
-        gc.setServiceName("%sService");    // 去掉Service接口的首字母I
-        gc.setIdType(IdType.ID_WORKER_STR); // 主键策略(分布式id生成器)
-        gc.setDateType(DateType.ONLY_DATE);// 定义生成的实体类中日期类型(datetime)
-        gc.setSwagger2(true);// 开启Swagger2模式
-
-        mpg.setGlobalConfig(gc);
-
-        // 3、数据源配置
-        DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/guli?serverTimezone=GMT%2B8"); //数据库连接
-        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("root");
-        dsc.setDbType(DbType.MYSQL);
-        mpg.setDataSource(dsc);
-
-        // 4、包配置
-        PackageConfig pc = new PackageConfig();
-        pc.setParent("pers.prover07.guli");   // 包名 = parent + moduleName
-        pc.setModuleName("edu"); //模块名
-        pc.setController("controller");
-        pc.setEntity("entity");
-        pc.setService("service");
-        pc.setMapper("mapper");
-        mpg.setPackageInfo(pc);
-
-        // 5、策略配置
-        StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("edu_teacher"); // 要生成数据文件的表
-        strategy.setNaming(NamingStrategy.underline_to_camel);  //数据库表映射到实体的命名策略
-        strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀
-
-        strategy.setColumnNaming(NamingStrategy.underline_to_camel);//数据库表字段映射到实体的命名策略
-        strategy.setEntityLombokModel(true); // lombok 模型 @Accessors(chain = true) setter链式操作
-
-        strategy.setRestControllerStyle(true); //restful api风格控制器
-        strategy.setControllerMappingHyphenStyle(true); //url中驼峰转连字符
-
-        mpg.setStrategy(strategy);
-
-        // 6、执行
-        mpg.execute();
-    }
-}
-```
-
-## 统一日志处理
-
-### SpringBoot 控制台配置日志级别
-
-日志记录器（Logger）的行为是分等级的 -> OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL 
-
-默认情况下，spring boot 从控制台打印出来的日志级别只有 INFO 及以上级别，可以配置日志级别
-
-```properties
-# 设置日志级别
-logging.level.root=WARN
-```
-
-tips：这种方式只能将日志答应在控制台上
-
-### Logback 日志
-
-SpringBoot 内部使用 logback 作为日志实现的框架
-
-Logback和log4j非常相似，如果你对log4j很熟悉，那对logback很快就会得心应手。 
-
-logback相对于log4j的一些优点：https://blog.csdn.net/caisini_vc/article/details/48551287
-
-> 如何配置？
-
-在项目的 `resouces` 文件夹下创建 **logback-spring.xml**
-
-tips: 如果要使用这个，那么记得将 SpringBoot 配置文件有关日志的配置注释(MP,logging等)
-
-```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="10 seconds">
     <!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设
@@ -119,7 +11,7 @@ tips: 如果要使用这个，那么记得将 SpringBoot 配置文件有关日�
     <contextName>logback</contextName>
     <!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入
 到logger上下文中。定义变量后，可以使“${}”来使用变量。 -->
-    <property name="log.path" value="D:/guli_log/edu" />
+    <property name="log.path" value="D:/guli_log/edu"/>
     <!-- 彩色日志 -->
     <!-- 配置格式变量：CONSOLE_LOG_PATTERN 彩色日志格式 -->
     <!-- magenta:洋红 -->
@@ -154,16 +46,17 @@ tips: 如果要使用这个，那么记得将 SpringBoot 配置文件有关日�
         <!--日志文件输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level
-                %logger{50} - %msg%n</pattern>
+                %logger{50} - %msg%n
+            </pattern>
             <charset>UTF-8</charset>
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <rollingPolicy
-                       class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 每天日志归档路径以及格式 -->
             <fileNamePattern>${log.path}/info/log-info-%d{yyyy-MMdd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
-                                                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!--日志文件保留天数-->
@@ -184,15 +77,16 @@ tips: 如果要使用这个，那么记得将 SpringBoot 配置文件有关日�
         <!--日志文件输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level
-                %logger{50} - %msg%n</pattern>
+                %logger{50} - %msg%n
+            </pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <rollingPolicy
-                       class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log.path}/warn/log-warn-%d{yyyy-MMdd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
-                                                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!--日志文件保留天数-->
@@ -213,15 +107,16 @@ tips: 如果要使用这个，那么记得将 SpringBoot 配置文件有关日�
         <!--日志文件输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level
-                %logger{50} - %msg%n</pattern>
+                %logger{50} - %msg%n
+            </pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <rollingPolicy
-                       class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log.path}/error/log-error-%d{yyyy-MMdd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
-                                                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!--日志文件保留天数-->
@@ -255,7 +150,7 @@ level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERR
     <!--开发环境:打印控制台-->
     <springProfile name="dev">
         <!--可以输出项目中的debug日志，包括mybatis的sql日志-->
-        <logger name="com.guli" level="INFO" />
+        <logger name="com.guli" level="INFO"/>
         <!--
 root节点是必选节点，用来指定最基础的日志输出级别，只有一个level属性
 level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR,
@@ -263,32 +158,20 @@ ALL 和 OFF，默认是DEBUG
 可以包含零个或多个appender元素。
 -->
         <root level="INFO">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="INFO_FILE" />
-            <appender-ref ref="WARN_FILE" />
-            <appender-ref ref="ERROR_FILE" />
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
         </root>
     </springProfile>
     <!--生产环境:输出到文件-->
     <springProfile name="prod">
         <root level="INFO">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="DEBUG_FILE" />
-            <appender-ref ref="INFO_FILE" />
-            <appender-ref ref="ERROR_FILE" />
-            <appender-ref ref="WARN_FILE" />
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DEBUG_FILE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
         </root>
     </springProfile>
 </configuration>
-```
-
-
-
-# 前端
-
-# 其他
-
-
-
-
-
