@@ -30,6 +30,7 @@ import java.util.List;
 @Api(tags = "教师管理")
 @RestController
 @RequestMapping("/api/edu/teacher")
+@CrossOrigin
 public class TeacherController {
 
     @Autowired
@@ -62,7 +63,8 @@ public class TeacherController {
                 .like(!StringUtils.isEmpty(teacherQueryVo.getName()), Teacher::getName, teacherQueryVo.getName())
                 .eq(!StringUtils.isEmpty(teacherQueryVo.getLevel()), Teacher::getLevel, teacherQueryVo.getLevel())
                 .ge(!StringUtils.isEmpty(teacherQueryVo.getBegin()), Teacher::getGmtCreate, teacherQueryVo.getBegin())
-                .le(!StringUtils.isEmpty(teacherQueryVo.getEnd()), Teacher::getGmtCreate, teacherQueryVo.getEnd());
+                .le(!StringUtils.isEmpty(teacherQueryVo.getEnd()), Teacher::getGmtCreate, teacherQueryVo.getEnd())
+                .orderByDesc(Teacher::getGmtCreate);
 
         teacherService.page(teacherPage, queryWrapper);
 

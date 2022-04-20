@@ -28,7 +28,7 @@ public class Result {
     private String message;
 
     @ApiModelProperty(value = "返回数据")
-    private Object data = new Object();
+    private Object data;
 
     // 私有化构造器
     private Result() {

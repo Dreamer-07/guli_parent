@@ -14,7 +14,9 @@ public enum ResultTypeEnum {
     // 正常业务成功
     SUCCESS(20000, "成功"),
     // 通用业务失败
-    FALID(20001, "服务器出错了");
+    FALID(20001, "服务器出错了"),
+    // OSS 文件上传错误
+    OSS_FILE_UPLOAD_FAILD(30001, "OSS 文件上传失败");
 
     private ResultTypeEnum(Integer code, String message) {
         this.code = code;

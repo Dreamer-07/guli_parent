@@ -286,6 +286,60 @@ ALL 和 OFF，默认是DEBUG
 
 # 前端
 
+## 模块化
+
+> ES5
+
+```javascript
+function get() {
+    console.log("1111")
+}
+
+module.exports = {
+    get
+}
+```
+
+```javascript
+var _ = require('js文件路径')
+_.get()
+```
+
+> ES6(1)：node 无法直接执行，需要转换为 es5 后才可以执行
+
+```javascript
+export function get1() {
+    console.log("1111")
+}
+
+export function get2() {
+    console.log("2222")
+}
+```
+
+```javascript
+import {get1, get2} from "js文件路径"
+```
+
+> ES6(2)：node 无法直接执行，需要转换为 es5 后才可以执行
+
+```javascript
+function get() {
+    console.log("1111")
+}
+
+export default {
+    get
+}
+```
+
+```javascript
+import m from "js文件路径"
+m.get()
+```
+
+
+
 # 其他
 
 
