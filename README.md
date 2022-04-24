@@ -338,7 +338,59 @@ import m from "js文件路径"
 m.get()
 ```
 
+## Tinymce 富文本编辑器
 
+> 这里使用的 `vue-element-admin-master` 封装好的，也可以自己找一下如何引入官方的 tinymce
+
+1. 在 `vue-element-admin-master` 的 static 文件夹下，有一个 **tinymce** 文件夹，把它cv到我们项目的 static 文件夹下
+
+2. 修改 `webpack.dev.conf.js` 配置模板参数
+
+   ```js
+   new HtmlWebpackPlugin({
+       ...
+       templateParameters: {
+           BASE_URL: config.dev.assetsPublicPath + config.dev.assetsSubDirectory
+       }
+   })
+   ```
+
+3. 在 `index.html` 中使用模板参数，引入 tinymce 的 js 文件
+
+   (可能会有解析问题，不用理; 记得重启以下)
+
+   ```html
+   <script src=<%= BASE_URL %>/tinymce4.7.5/tinymce.min.js></script>
+   <script src=<%= BASE_URL %>/tinymce4.7.5/langs/zh_CN.js></script>
+   ```
+
+4. 将 `vue-element-admin-master` 的 components 文件夹下的 **Tinymce** cv 到我们项目的 components 文件夹下
+
+5. 在页面中引入并注册使用
+
+   ```javascript
+   import Tinymce from '@/components/Tinymce'
+   ```
+
+   ```javascript
+   components: {
+       Tinymce
+   }
+   ```
+
+   ```html
+   <tinymce :height="300" v-model="courseInfo.description"/>
+   ```
+
+6. [可选]调整下样式
+
+   ```css
+   .tinymce-container {
+       line-height: 29px;
+   }
+   ```
+
+   
 
 # 其他
 

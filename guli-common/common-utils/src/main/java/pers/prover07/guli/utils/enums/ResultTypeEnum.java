@@ -20,13 +20,15 @@ public enum ResultTypeEnum {
     // XLSX 文件上传失败
     XLSX_FILE_UPLOAD_FILID(30002, "xlsx 文件上传失败"),
     // XLSX 文件没有大小
-    XLSX_FILE_NO_SIZE(30003, "xlsx 文件没有大小");
+    XLSX_FILE_NO_SIZE(30003, "xlsx 文件没有大小"),
+    // 删除章节时，由于小节存在所以不允许删除
+    HAS_VIDEO(40001, "存在小节信息，请先删除对应的小节信息");
 
     private ResultTypeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    private Integer code;
-    private String message;
+    private final Integer code;
+    private final String message;
 }
