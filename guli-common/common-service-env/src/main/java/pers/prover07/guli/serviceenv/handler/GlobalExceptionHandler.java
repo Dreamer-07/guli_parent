@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception exception) {
         log.error("出现了新的全局异常: {}", ExceptionUtil.getMessage(exception));
-        return Result.falid();
+        return Result.falid().message(exception.getMessage());
     }
 
     @ExceptionHandler(GuliException.class)

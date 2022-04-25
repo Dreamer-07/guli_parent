@@ -27,4 +27,10 @@ public interface VideoService extends IService<Video> {
      * @param courseId
      */
     void deleteByCourseId(String courseId);
+
+    /**
+     * 删除小节详细视频
+     * @param videoId
+     */
+    void removeDetail(String videoId);
 }

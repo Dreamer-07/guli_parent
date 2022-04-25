@@ -284,6 +284,194 @@ ALL 和 OFF，默认是DEBUG
 
 
 
+## 阿里云视频点播技术
+
+> 首先要去阿里云开通对应的控制台哟
+
+### 阿里云技术的基本概念
+
+- 服务端：后端接口
+- 客户端：游览器/安卓/IOS
+- API：阿里云提供固定的地址，可以通过 **httpclient** 向该地址发送携带指定参数的请求，以完成对应的操作
+- SDK：阿里云对 API 的封装后提供的工具，更方便使用
+
+### 使用
+
+注意：
+
+- 视频资源应该是需要**加密**的，所以无法直接通过 `url` 访问，而是应该存储**视频资源的id**，通过该id可以获取播放视频的凭证和地址，以此来访问视频
+
+> 文件上传
+>
+
+1. 在视频点播的控制台上开启相关配置
+
+   ![image-20220425081951810](README.assets/image-20220425081951810.png)
+
+2. 在阿里云官网上先下载对应的 Demo.zip
+
+3. 解压 Demo.zip，找到 lib 目录，打开 cmd，输入以下命令(注意版本变化)
+
+   ```bash
+   mvn install:install "-Dfile=aliyun-java-vod-upload-1.4.14.jar" "-DgroupId=com.aliyun" "-DartifactId=aliyun-sdk-vod-upload" "-Dversion=1.4.14" "-Dpackage=jar"
+   ```
+
+4. 前两步主要是为了将阿里还未开源的包安装到本地仓库来，以便使用
+
+5. 在项目中引入依赖
+
+   ```xml
+   <dependency>
+       <groupId>com.aliyun</groupId>
+       <artifactId>aliyun-java-sdk-core</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>com.aliyun.oss</groupId>
+       <artifactId>aliyun-sdk-oss</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>com.aliyun</groupId>
+       <artifactId>aliyun-java-sdk-vod</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>com.aliyun</groupId>
+       <artifactId>aliyun-sdk-vod-upload</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>com.alibaba</groupId>
+       <artifactId>fastjson</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>org.json</groupId>
+       <artifactId>json</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>joda-time</groupId>
+       <artifactId>joda-time</artifactId>
+   </dependency>
+   ```
+
+   版本关系
+
+    ![image-20220425070702558](README.assets/image-20220425070702558.png)
+
+6. 编写配置文件
+
+   ```xml
+   aliyun.vod.file.keyid=your accessKeyId
+   aliyun.vod.file.keysecret=your accessKeySecret
+   ```
+
+7. 编写配置类
+
+   ```java
+   @Data
+   @ToString
+   @Component
+   @ConfigurationProperties(prefix = "aliyun.oss.file")
+   public class OSSConfigProperties {
+   
+       private String keyId;
+   
+       private String keySecret;
+   
+   }
+   ```
+
+8. 编写业务类
+
+   ```java
+   @Autowired
+   private OSSConfigProperties ossConfigProperties;
+   
+   @Override
+   public String uploadFile(MultipartFile file) {
+       try {
+           InputStream is = file.getInputStream();
+           // 获取源文件名
+           String originalFilename = file.getOriginalFilename();
+           // 视频标题
+           String title = originalFilename.substring(0, originalFilename.lastIndexOf("."));
+           // 构建请求
+           UploadStreamRequest uploadStreamRequest = new UploadStreamRequest(
+               ossConfigProperties.getKeyId(), ossConfigProperties.getKeySecret(),
+               title, originalFilename, is
+           );
+           // uploadStreamRequest.setApiRegionId("cn-beijing");
+   
+           UploadVideoImpl uploader = new UploadVideoImpl();
+           UploadStreamResponse uploadStreamResponse = uploader.uploadStream(uploadStreamRequest);
+           String videoId = uploadStreamResponse.getVideoId();
+           if (uploadStreamResponse.isSuccess()) {
+               return videoId;
+           } else {
+               throw new GuliException(30003, "service-vdo/VodFileServiceImpl: 上传文件失败, 错误码:" + videoId);
+           }
+       } catch (IOException e) {
+           throw new GuliException(ResultTypeEnum.VDO_FILE_UPLOAD_FAILD);
+       }
+   }
+   ```
+
+9. 编写控制层
+
+   ```java
+   @Autowired
+   private VodFileService vodFileService;
+   
+   @PostMapping("/upload")
+   public Result upload(@ApiParam(value = "上传的文件", name = "file", required = true)
+                        @RequestParam("file") MultipartFile multipartFile) {
+       String videoId = vodFileService.uploadFile(multipartFile);
+       return Result.ok().data(videoId);
+   }
+   ```
+
+> 文件删除
+
+1. 添加配置类
+
+   ```java
+   @Configuration
+   public class AliyunVodConfig {
+   
+       @Autowired
+       private OSSConfigProperties ossConfigProperties;
+   
+       @Bean
+       public DefaultAcsClient acsClient() {
+           // 点播服务接入区域
+           String regionId = "cn-shanghai";
+           DefaultProfile profile = DefaultProfile.getProfile(regionId, ossConfigProperties.getKeyId(), ossConfigProperties.getKeySecret());
+           return new DefaultAcsClient(profile);
+       }
+   
+   }
+   ```
+
+2. 编写业务类
+
+   ```java
+   @Autowired
+   private DefaultAcsClient acsClient;
+   
+   @Override
+   public void delete(String videoSourceId) {
+       // 构建请求
+       try {
+           DeleteVideoRequest deleteVideoRequest = new DeleteVideoRequest();
+           // 设置要删除的视频id
+           deleteVideoRequest.setVideoIds(videoSourceId);
+           // 执行请求
+           acsClient.getAcsResponse(deleteVideoRequest);
+       } catch (ClientException e) {
+           throw new GuliException("删除视频失败: " + ExceptionUtil.getMessage(e));
+       }
+   }
+   ```
+
+
+
 # 前端
 
 ## 模块化

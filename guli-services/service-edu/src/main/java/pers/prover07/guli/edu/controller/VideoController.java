@@ -20,9 +20,9 @@ import pers.prover07.guli.utils.Result;
  * @since 2022-04-22
  */
 @Api(tags = "课时小节管理")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/edu/video")
-@CrossOrigin
 public class VideoController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class VideoController {
     @DeleteMapping("{videoId}")
     @ApiOperation("删除小节")
     public Result delete(@ApiParam("小节id") @PathVariable String videoId) {
-        videoService.removeById(videoId);
+        videoService.removeDetail(videoId);
         return Result.ok();
     }
 
