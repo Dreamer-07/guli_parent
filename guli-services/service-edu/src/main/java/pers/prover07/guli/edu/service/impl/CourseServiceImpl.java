@@ -20,6 +20,8 @@ import pers.prover07.guli.edu.service.CourseDescriptionService;
 import pers.prover07.guli.edu.service.CourseService;
 import pers.prover07.guli.edu.service.VideoService;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程 服务实现类
@@ -97,7 +99,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         this.page(coursePage, lqw);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public void deleteDetail(String courseId) {
         // 删除小节
@@ -108,6 +110,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         courseDescriptionService.removeById(courseId);
         // 删除课程
         this.removeById(courseId);
+    }
+
+    @Override
+    public List<Course> getIndexRankList() {
+        LambdaQueryWrapper<Course> lqw = new LambdaQueryWrapper<Course>()
+                .orderByDesc(Course::getId)
+                .last("limit 8");
+        return this.list(lqw);
     }
 
 }

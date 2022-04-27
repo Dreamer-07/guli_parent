@@ -13,6 +13,7 @@
         <module>service-edu</module>
         <module>service-oss</module>
         <module>service-vdo</module>
+        <module>service-cms</module>
     </modules>
 
     <artifactId>guli-services</artifactId>

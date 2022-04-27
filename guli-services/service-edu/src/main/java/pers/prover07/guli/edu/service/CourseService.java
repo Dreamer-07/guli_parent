@@ -7,6 +7,8 @@ import pers.prover07.guli.edu.entity.vo.CourseInfoVo;
 import pers.prover07.guli.edu.entity.vo.CoursePublishVo;
 import pers.prover07.guli.edu.entity.vo.CourseQueryVo;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程 服务类
@@ -56,4 +58,10 @@ public interface CourseService extends IService<Course> {
      * @param courseId
      */
     void deleteDetail(String courseId);
+
+    /**
+     * 获取热度列表
+     * @return
+     */
+    List<Course> getIndexRankList();
 }
