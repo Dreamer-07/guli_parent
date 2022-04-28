@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurationSelector;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,8 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import pers.prover07.guli.serviceenv.tools.IGlobalCache;
+import pers.prover07.guli.serviceenv.tools.impl.CustomRedisCacheManager;
 
 import javax.annotation.Resource;
 
@@ -30,7 +34,7 @@ import javax.annotation.Resource;
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
 
-    @Resource
+    @Autowired
     private RedisConnectionFactory redisConnectionFactory;
 
     /**
@@ -90,6 +94,11 @@ public class RedisConfig extends CachingConfigurerSupport {
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(config)
                 .build();
+    }
+
+    @Bean
+    public IGlobalCache globalCache() {
+        return new CustomRedisCacheManager(redisTemplate());
     }
 
 }

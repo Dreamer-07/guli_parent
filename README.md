@@ -472,9 +472,23 @@ ALL 和 OFF，默认是DEBUG
 
 
 
+## 单点登录
+
+- 又称为 Single Sign On，简称 SSO,指的是：在多个系统应用中，只需要登录一次，就可以访问其他相互信任的应用系统
+- 实现方式
+  1. Session复制：Tomcat集群Session全局复制（集群内每个tomcat的session完全同步）【会影响集群的性能呢，不建议】
+  2. Cookie + Redis：生成一个随机的 key，并将对应的用户信息作为 value 保存到 redis 中，然后将 key 保存到 Cookie 中
+  3. Token：为用户生成一个 token，该 token 可以标识该用户的身份/信息，然后将 token 保存到 Cookie/请求路径 中
+
+> 拓展：TODO-通过 CAS 实现不同域名的 SSO
+
+
+
+
+
 # 前端
 
-## 模块化
+## (复习)模块化
 
 > ES5
 
