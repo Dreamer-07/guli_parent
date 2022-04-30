@@ -38,7 +38,9 @@ public enum ResultTypeEnum {
     // 用户已存在
     USER_ALREADY_EXISTS(50005, "用户已存在"),
     // 验证码失效
-    CODE_INVALID(50006, "验证码失效"),;
+    CODE_INVALID(50006, "验证码失效"),
+    MEMBER_WX_LOGIN_TOKEN_ERROR(50007, "获取微信 access_token 失败"),
+    MEMBER_WX_USER_INFO_ERROR(50008, "获取微信用户信息失败");
 
     private ResultTypeEnum(Integer code, String message) {
         this.code = code;

@@ -27,4 +27,11 @@ public interface MemberService extends IService<Member> {
      * @param registerVo
      */
     void register(RegisterVo registerVo);
+
+    /**
+     * 根据 openId 获取用户信息
+     * @param openId
+     * @return
+     */
+    Member getByOpenId(String openId);
 }

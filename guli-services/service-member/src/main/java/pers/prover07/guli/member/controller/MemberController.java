@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author 小丶木曾义仲丶哈牛柚子露丶蛋卷
  * @since 2022-04-27
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/app/member")
 public class MemberController {
@@ -33,6 +34,7 @@ public class MemberController {
         String token = memberService.mobileLogin(loginVo.getMobile(), loginVo.getPassword());
         return Result.ok().data(token);
     }
+
 
     @PostMapping("/register")
     public Result memberRegister(@RequestBody RegisterVo registerVo) {

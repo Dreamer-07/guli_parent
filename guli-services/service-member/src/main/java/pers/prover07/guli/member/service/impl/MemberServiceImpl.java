@@ -88,4 +88,10 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         member.setIsDisabled(false);
         this.save(member);
     }
+
+    @Override
+    public Member getByOpenId(String openId) {
+        LambdaQueryWrapper<Member> lqw = new LambdaQueryWrapper<Member>().eq(Member::getOpenid, openId);
+        return this.getOne(lqw);
+    }
 }
