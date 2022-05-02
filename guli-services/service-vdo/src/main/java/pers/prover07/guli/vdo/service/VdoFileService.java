@@ -23,4 +23,11 @@ public interface VdoFileService {
      * @param videoSourceIds 待删除的视频资源标识集合
      */
     void batchDetele(List<String> videoSourceIds);
+
+    /**
+     * 获取播放凭证
+     * @param videoSourceId
+     * @return
+     */
+    String getPlayAuth(String videoSourceId);
 }

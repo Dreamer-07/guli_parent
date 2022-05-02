@@ -7,6 +7,7 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoResponse;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,6 +89,17 @@ public class VdoFileServiceImpl implements VdoFileService {
             acsClient.getAcsResponse(deleteVideoRequest);
         } catch (ClientException e) {
             throw new GuliException("批量删除视频失败: " + ExceptionUtil.getMessage(e));
+        }
+    }
+
+    @Override
+    public String getPlayAuth(String videoSourceId) {
+        try {
+            GetVideoPlayAuthRequest videoPlayAuthRequest = new GetVideoPlayAuthRequest();
+            videoPlayAuthRequest.setVideoId(videoSourceId);
+            return acsClient.getAcsResponse(videoPlayAuthRequest).getPlayAuth();
+        } catch (ClientException e) {
+            throw new GuliException("获取视频凭证失败: " + ExceptionUtil.getMessage(e));
         }
     }
 }

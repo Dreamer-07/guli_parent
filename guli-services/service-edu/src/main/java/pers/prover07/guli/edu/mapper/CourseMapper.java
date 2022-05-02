@@ -2,6 +2,7 @@ package pers.prover07.guli.edu.mapper;
 
 import pers.prover07.guli.edu.entity.Course;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import pers.prover07.guli.edu.entity.vo.CourseAppDetailVo;
 import pers.prover07.guli.edu.entity.vo.CoursePublishVo;
 
 /**
@@ -16,4 +17,5 @@ public interface CourseMapper extends BaseMapper<Course> {
 
     CoursePublishVo getCoursePublishInfo(String courseId);
 
+    CourseAppDetailVo getCourseDatailInfo(String courseId);
 }

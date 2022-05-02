@@ -3,9 +3,7 @@ package pers.prover07.guli.edu.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover07.guli.edu.entity.Course;
-import pers.prover07.guli.edu.entity.vo.CourseInfoVo;
-import pers.prover07.guli.edu.entity.vo.CoursePublishVo;
-import pers.prover07.guli.edu.entity.vo.CourseQueryVo;
+import pers.prover07.guli.edu.entity.vo.*;
 
 import java.util.List;
 
@@ -54,6 +52,13 @@ public interface CourseService extends IService<Course> {
     void pageByCondition(Page<Course> coursePage, CourseQueryVo courseQueryVo);
 
     /**
+     * (app)根据指定条件检索分页数据
+     * @param coursePage
+     * @param courseAppQueryVo
+     */
+    void pageByCondition(Page<Course> coursePage, CourseAppQueryVo courseAppQueryVo);
+
+    /**
      * 删除指定课程的所有的信息
      * @param courseId
      */
@@ -64,4 +69,18 @@ public interface CourseService extends IService<Course> {
      * @return
      */
     List<Course> getIndexRankList();
+
+    /**
+     * 获取教师的课程
+     * @param teacherId
+     * @return
+     */
+    List<Course> getByTeacherId(String teacherId);
+
+    /**
+     * 获取课程详情信息
+     * @param courseId
+     * @return
+     */
+    CourseAppDetailVo getCourseDetailInfo(String courseId);
 }

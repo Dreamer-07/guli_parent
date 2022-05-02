@@ -26,4 +26,39 @@
         WHERE
             ec.id = #{courseId}
     </select>
+    <select id="getCourseDatailInfo" resultType="pers.prover07.guli.edu.entity.vo.CourseAppDetailVo">
+        SELECT
+            ec.id,
+            ec.title,
+            ec.cover,
+            ec.lesson_num,
+            ec.buy_count,
+            ec.view_count,
+            ecd.description,
+            subject_union.subject_level_one,
+            subject_union.subject_level_one_id,
+            subject_union.subject_level_two_id,
+            subject_union.subject_level_two,
+            et.id teacherId,
+            et.name teacherName,
+            et.intro,
+            et.avatar,
+            CONVERT (ec.price, DECIMAL ( 8, 2 )) AS price
+        FROM
+            `edu_course` ec
+                LEFT JOIN `edu_course_description` ecd ON ec.id = ecd.id
+                LEFT JOIN `edu_teacher` et ON ec.teacher_id = et.id
+                LEFT JOIN (
+                    SELECT
+                        es1.title subject_level_one,
+                        es2.title subject_level_two,
+                        es2.id AS subject_level_two_id,
+                        es1.id AS subject_level_one_id
+                    FROM
+                        `edu_subject` es1
+                            INNER JOIN `edu_subject` es2 ON es2.parent_id = es1.id
+                ) subject_union ON subject_union.subject_level_two_id = ec.subject_id
+        WHERE
+            ec.id = #{courseId}
+    </select>
 </mapper>

@@ -15,4 +15,6 @@ public class VideoSaveVo {
 
     private String title;
 
+    private String videoSourceId;
+
 }

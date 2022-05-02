@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import pers.prover07.guli.edu.entity.Course;
 import pers.prover07.guli.edu.entity.CourseDescription;
-import pers.prover07.guli.edu.entity.vo.CourseInfoVo;
-import pers.prover07.guli.edu.entity.vo.CoursePublishVo;
-import pers.prover07.guli.edu.entity.vo.CourseQueryVo;
+import pers.prover07.guli.edu.entity.vo.*;
 import pers.prover07.guli.edu.mapper.CourseMapper;
 import pers.prover07.guli.edu.service.ChapterService;
 import pers.prover07.guli.edu.service.CourseDescriptionService;
@@ -99,6 +97,18 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         this.page(coursePage, lqw);
     }
 
+    @Override
+    public void pageByCondition(Page<Course> coursePage, CourseAppQueryVo courseAppQueryVo) {
+        LambdaQueryWrapper<Course> lqw = new LambdaQueryWrapper<Course>()
+                .eq(!StringUtils.isEmpty(courseAppQueryVo.getSubjectParentId()), Course::getSubjectParentId, courseAppQueryVo.getSubjectParentId())
+                .eq(!StringUtils.isEmpty(courseAppQueryVo.getSubjectId()), Course::getSubjectId, courseAppQueryVo.getSubjectId())
+                .orderByDesc(!StringUtils.isEmpty(courseAppQueryVo.getBuyCountSort()), Course::getBuyCount)
+                .orderByDesc(!StringUtils.isEmpty(courseAppQueryVo.getGmtCreateSort()), Course::getGmtCreate)
+                .orderByDesc(!StringUtils.isEmpty(courseAppQueryVo.getPriceSort()), Course::getPrice);
+
+        this.page(coursePage, lqw);
+    }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public void deleteDetail(String courseId) {
@@ -118,6 +128,18 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 .orderByDesc(Course::getId)
                 .last("limit 8");
         return this.list(lqw);
+    }
+
+    @Override
+    public List<Course> getByTeacherId(String teacherId) {
+        LambdaQueryWrapper<Course> lqw = new LambdaQueryWrapper<Course>()
+                .eq(Course::getTeacherId, teacherId);
+        return this.list(lqw);
+    }
+
+    @Override
+    public CourseAppDetailVo getCourseDetailInfo(String courseId) {
+        return baseMapper.getCourseDatailInfo(courseId);
     }
 
 }
