@@ -470,7 +470,54 @@ ALL 和 OFF，默认是DEBUG
    }
    ```
 
+> Web App 凭证播放：[更多配置](https://player.alicdn.com/aliplayer/presentation/index.html?type=cover)
 
+1. 引入需要的资源
+
+   ```html
+   <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.9.20/skins/default/aliplayer-min.css"/>
+   <!-- 定义播放器dom -->
+   <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.9.20/aliplayer-min.js"></script>
+   ```
+
+2. 编写后端代码，用来获取阿里云视频播放凭证
+
+   ```java
+   @Override
+   public String getPlayAuth(String videoSourceId) {
+       try {
+           GetVideoPlayAuthRequest videoPlayAuthRequest = new GetVideoPlayAuthRequest();
+           videoPlayAuthRequest.setVideoId(videoSourceId);
+           return acsClient.getAcsResponse(videoPlayAuthRequest).getPlayAuth();
+       } catch (ClientException e) {
+           throw new GuliException("获取视频凭证失败: " + ExceptionUtil.getMessage(e));
+       }
+   }
+   ```
+
+3. 编写前端代码，先获取凭证，在添加视频配置
+
+   ```java
+   async asyncData({params}) {
+       // 获取视频凭证
+       const {data: playAuth} = await videoApi.getPlayAuth(params.vid)
+           return {playAuth, vid: params.vid}
+   },
+   mounted() {
+       new Aliplayer({
+           id: 'J_prismPlayer', // 页面容器标签的id
+           vid: this.vid, // 视频id
+           playauth: this.playAuth, // 播放凭证
+           encryptType: '1', // 如果播放加密视频，则需设置encryptType=1，非加密视频无需设置此项
+           width: '100%',
+           height: '500px'
+       }, function (player) {
+           console.log('播放器创建成功')
+       })
+   }
+   ```
+
+   
 
 ## 单点登录
 
