@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover07.guli.edu.entity.Course;
 import pers.prover07.guli.edu.entity.vo.*;
+import pers.prover07.guli.serviceenv.vo.OrderCourseVo;
 
 import java.util.List;
 
@@ -83,4 +84,11 @@ public interface CourseService extends IService<Course> {
      * @return
      */
     CourseAppDetailVo getCourseDetailInfo(String courseId);
+
+    /**
+     * 过程订单中需要显示的课程信息
+     * @param courseId
+     * @return
+     */
+    OrderCourseVo getOrderCourseInfo(String courseId);
 }

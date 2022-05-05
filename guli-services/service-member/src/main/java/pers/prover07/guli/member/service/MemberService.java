@@ -3,6 +3,7 @@ package pers.prover07.guli.member.service;
 import pers.prover07.guli.member.entity.Member;
 import com.baomidou.mybatisplus.extension.service.IService;
 import pers.prover07.guli.member.entity.vo.RegisterVo;
+import pers.prover07.guli.serviceenv.vo.OrderMemberVo;
 
 /**
  * <p>
@@ -34,4 +35,11 @@ public interface MemberService extends IService<Member> {
      * @return
      */
     Member getByOpenId(String openId);
+
+    /**
+     * 获取订单的用户信息
+     * @param memberId
+     * @return
+     */
+    OrderMemberVo getOrderMemberInfo(String memberId);
 }

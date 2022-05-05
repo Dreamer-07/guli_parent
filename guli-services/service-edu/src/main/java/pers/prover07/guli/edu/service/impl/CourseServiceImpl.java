@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import pers.prover07.guli.edu.entity.Course;
 import pers.prover07.guli.edu.entity.CourseDescription;
+import pers.prover07.guli.edu.entity.Teacher;
 import pers.prover07.guli.edu.entity.vo.*;
 import pers.prover07.guli.edu.mapper.CourseMapper;
-import pers.prover07.guli.edu.service.ChapterService;
-import pers.prover07.guli.edu.service.CourseDescriptionService;
-import pers.prover07.guli.edu.service.CourseService;
-import pers.prover07.guli.edu.service.VideoService;
+import pers.prover07.guli.edu.service.*;
+import pers.prover07.guli.serviceenv.vo.OrderCourseVo;
+import pers.prover07.guli.serviceenv.vo.OrderMemberVo;
 
 import java.util.List;
 
@@ -39,6 +39,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Autowired
     private ChapterService chapterService;
+
+    @Autowired
+    private TeacherService teacherService;
 
     @Override
     public String saveDetail(CourseInfoVo courseInfoVo) {
@@ -140,6 +143,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public CourseAppDetailVo getCourseDetailInfo(String courseId) {
         return baseMapper.getCourseDatailInfo(courseId);
+    }
+
+    @Override
+    public OrderCourseVo getOrderCourseInfo(String courseId) {
+        Course course = this.getById(courseId);
+        Teacher teacher = teacherService.getById(course.getTeacherId());
+        return new OrderCourseVo(course.getId(), course.getTitle(), course.getCover(), teacher.getName());
     }
 
 }

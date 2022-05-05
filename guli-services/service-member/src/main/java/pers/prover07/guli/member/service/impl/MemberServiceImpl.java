@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import pers.prover07.guli.serviceenv.exception.GuliException;
 import pers.prover07.guli.serviceenv.tools.IGlobalCache;
+import pers.prover07.guli.serviceenv.vo.OrderMemberVo;
 import pers.prover07.guli.utils.JwtUtils;
 import pers.prover07.guli.utils.MD5;
 import pers.prover07.guli.utils.enums.ResultTypeEnum;
@@ -93,5 +94,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     public Member getByOpenId(String openId) {
         LambdaQueryWrapper<Member> lqw = new LambdaQueryWrapper<Member>().eq(Member::getOpenid, openId);
         return this.getOne(lqw);
+    }
+
+    @Override
+    public OrderMemberVo getOrderMemberInfo(String memberId) {
+        Member member = this.getById(memberId);
+        return new OrderMemberVo(member.getId(), member.getNickname(), member.getMobile());
     }
 }

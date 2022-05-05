@@ -5,6 +5,7 @@ import lombok.Getter;
 
 /**
  * 同一返回结果集的常用信息
+ *
  * @author 小丶木曾义仲丶哈牛柚子露丶蛋卷
  * @version 1.0
  * @date 2022/4/18 9:59
@@ -28,7 +29,7 @@ public enum ResultTypeEnum {
     // 删除章节时，由于小节存在所以不允许删除
     HAS_VIDEO(40001, "存在小节信息，请先删除对应的小节信息"),
     // feign 服务降级
-    FEIGN_FALLBACK(50001, "feign 调用出现了服务降级: "),
+    FEIGN_FALLBACK(50001, "feign 调用出现了服务降级:"),
     // 查找不到用户
     MEMBER_NO_FOUND(50002, "用户不存在"),
     // 密码错误
@@ -39,8 +40,14 @@ public enum ResultTypeEnum {
     USER_ALREADY_EXISTS(50005, "用户已存在"),
     // 验证码失效
     CODE_INVALID(50006, "验证码失效"),
+
     MEMBER_WX_LOGIN_TOKEN_ERROR(50007, "获取微信 access_token 失败"),
-    MEMBER_WX_USER_INFO_ERROR(50008, "获取微信用户信息失败");
+
+    MEMBER_WX_USER_INFO_ERROR(50008, "获取微信用户信息失败"),
+
+    WX_PAYING(20002, "支付中"),
+
+    ORDER_NO_FOUND(60001, "订单不存在");
 
     private ResultTypeEnum(Integer code, String message) {
         this.code = code;

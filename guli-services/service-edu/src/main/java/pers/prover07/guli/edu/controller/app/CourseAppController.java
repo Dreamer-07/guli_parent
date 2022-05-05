@@ -10,6 +10,7 @@ import pers.prover07.guli.edu.entity.vo.CourseAppDetailVo;
 import pers.prover07.guli.edu.entity.vo.CourseAppQueryVo;
 import pers.prover07.guli.edu.service.ChapterService;
 import pers.prover07.guli.edu.service.CourseService;
+import pers.prover07.guli.serviceenv.vo.OrderCourseVo;
 import pers.prover07.guli.utils.Result;
 
 import java.util.HashMap;
@@ -57,5 +58,10 @@ public class CourseAppController {
         dataMap.put("chapterList", chapterSaveVos);
 
         return Result.ok().data(dataMap);
+    }
+
+    @GetMapping("order/{courseId}")
+    public OrderCourseVo getOrderCourseInfo(@PathVariable String courseId) {
+        return courseService.getOrderCourseInfo(courseId);
     }
 }

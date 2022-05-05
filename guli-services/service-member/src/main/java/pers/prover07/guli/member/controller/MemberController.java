@@ -8,6 +8,7 @@ import pers.prover07.guli.member.entity.Member;
 import pers.prover07.guli.member.entity.vo.LoginVo;
 import pers.prover07.guli.member.entity.vo.RegisterVo;
 import pers.prover07.guli.member.service.MemberService;
+import pers.prover07.guli.serviceenv.vo.OrderMemberVo;
 import pers.prover07.guli.utils.JwtUtils;
 import pers.prover07.guli.utils.Result;
 
@@ -47,6 +48,11 @@ public class MemberController {
         String memberId = JwtUtils.getMemberIdByJwtToken(request);
         Member member = memberService.getById(memberId);
         return Result.ok().data(member);
+    }
+
+    @GetMapping("/order/{memberId}")
+    public OrderMemberVo getOrderMemberInfo(@PathVariable String memberId) {
+        return memberService.getOrderMemberInfo(memberId);
     }
 
 
