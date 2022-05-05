@@ -6,7 +6,6 @@
     <modules>
         <module>guli-services</module>
         <module>guli-common</module>
-        <module>common-service-env</module>
     </modules>
     <parent>
         <artifactId>spring-boot-dependencies</artifactId>

@@ -3,7 +3,6 @@ package pers.prover07.guli.order.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import pers.prover07.guli.order.entity.Order;
 import pers.prover07.guli.order.service.OrderService;
 import pers.prover07.guli.utils.JwtUtils;
@@ -40,5 +39,9 @@ public class OrderController {
         return Result.ok().data(order);
     }
 
+    @GetMapping("/isBuyCourse/{memberId}/{courseId}")
+    public Boolean getOrderStatus(@PathVariable String memberId, @PathVariable String courseId) {
+        return orderService.getOrderStatus(memberId, courseId);
+    }
 }
 

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pers.prover07.guli.edu.client.OrderFeignClient;
 import pers.prover07.guli.edu.entity.Course;
 import pers.prover07.guli.edu.entity.vo.ChapterSaveVo;
 import pers.prover07.guli.edu.entity.vo.CourseAppDetailVo;
@@ -11,8 +12,10 @@ import pers.prover07.guli.edu.entity.vo.CourseAppQueryVo;
 import pers.prover07.guli.edu.service.ChapterService;
 import pers.prover07.guli.edu.service.CourseService;
 import pers.prover07.guli.serviceenv.vo.OrderCourseVo;
+import pers.prover07.guli.utils.JwtUtils;
 import pers.prover07.guli.utils.Result;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +28,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/app/edu/course")
 public class CourseAppController {
+
+    @Autowired
+    private OrderFeignClient orderFeignClient;
 
     @Autowired
     private CourseService courseService;
@@ -48,14 +54,19 @@ public class CourseAppController {
     }
 
     @GetMapping("{courseId}")
-    public Result detail(@PathVariable String courseId) {
+    public Result detail(@PathVariable String courseId, HttpServletRequest request) {
         CourseAppDetailVo courseAppDetailVo = courseService.getCourseDetailInfo(courseId);
 
         List<ChapterSaveVo> chapterSaveVos = chapterService.findAllChapterByCourseId(courseId);
 
-        HashMap<String, Object> dataMap = new HashMap<>();
+        HashMap<String, Object> dataMap = new HashMap<>(3);
         dataMap.put("courseInfo", courseAppDetailVo);
         dataMap.put("chapterList", chapterSaveVos);
+
+        if (courseAppDetailVo.getPrice().intValue() != 0) {
+            boolean orderStatus = orderFeignClient.getOrderStatus(JwtUtils.getMemberIdByJwtToken(request), courseId);
+            dataMap.put("isBuy", orderStatus);
+        }
 
         return Result.ok().data(dataMap);
     }

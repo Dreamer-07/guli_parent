@@ -56,4 +56,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public Order getByOrderNo(String orderNo) {
         return this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getOrderNo, orderNo));
     }
+
+    @Override
+    public boolean getOrderStatus(String memberId, String courseId) {
+        LambdaQueryWrapper<Order> lqw = new LambdaQueryWrapper<Order>()
+                .eq(Order::getMemberId, memberId)
+                .eq(Order::getCourseId, courseId)
+                .eq(Order::getStatus, 1);
+        return this.count(lqw) > 0;
+    }
 }

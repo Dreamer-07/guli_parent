@@ -27,4 +27,12 @@ public interface OrderService extends IService<Order> {
      * @return
      */
     Order getByOrderNo(String orderNo);
+
+    /**
+     * 根据 用户和课程 查询用户是否购买过课程
+     * @param memberId
+     * @param courseId
+     * @return
+     */
+    boolean getOrderStatus(String memberId, String courseId);
 }
