@@ -55,6 +55,10 @@ public class MemberController {
         return memberService.getOrderMemberInfo(memberId);
     }
 
+    @GetMapping("/sta/register-count/{day}")
+    public int registerCount(@PathVariable String day) {
+        return memberService.registerCount(day);
+    }
 
 }
 

@@ -101,4 +101,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         Member member = this.getById(memberId);
         return new OrderMemberVo(member.getId(), member.getNickname(), member.getMobile());
     }
+
+    @Override
+    public int registerCount(String day) {
+        return this.baseMapper.registerCount(day);
+    }
 }

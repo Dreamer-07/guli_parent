@@ -42,4 +42,11 @@ public interface MemberService extends IService<Member> {
      * @return
      */
     OrderMemberVo getOrderMemberInfo(String memberId);
+
+    /**
+     * 以 day 为单位统计每日网站的注册用户
+     * @param day
+     * @return
+     */
+    int registerCount(String day);
 }
