@@ -6,6 +6,7 @@
     <modules>
         <module>guli-services</module>
         <module>guli-common</module>
+        <module>guli-gateway</module>
     </modules>
     <parent>
         <artifactId>spring-boot-dependencies</artifactId>

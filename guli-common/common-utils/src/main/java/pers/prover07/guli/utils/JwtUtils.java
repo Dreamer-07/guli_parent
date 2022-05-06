@@ -40,7 +40,9 @@ public class JwtUtils {
      * @return
      */
     public static boolean checkToken(String jwtToken) {
-        if (StringUtils.isEmpty(jwtToken)) return false;
+        if (StringUtils.isEmpty(jwtToken)) {
+            return false;
+        }
         try {
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         } catch (Exception e) {
