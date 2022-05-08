@@ -1,12 +1,8 @@
 package pers.prover07.guli.utils;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import pers.prover07.guli.utils.enums.ResultTypeEnum;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 同一返回结果集
