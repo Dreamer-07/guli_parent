@@ -19,8 +19,8 @@ node {
             for(int i=0;i<selectedProjects.size();i++){
                 def currentProject = selectedProjects[i]
                 sh """
-                    cd ${currentProject}  // 进入二级项目，如zuul
-                    ${scannerHome}/bin/sonar-scanner // 代码审查
+                    cd ${currentProject}
+                    ${scannerHome}/bin/sonar-scanner
                 """
             }
         }
