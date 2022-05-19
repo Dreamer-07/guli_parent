@@ -7,12 +7,10 @@ node {
     }
     // 构建项目并上传的服务器上
     stage('project build') {
-        steps {
-            // 配置nexus私服
-            sh 'mvn clean deploy'
-            // 未配置nexus私服
-            // sh 'mvn clean package'
-        }
+        // 配置nexus私服
+        sh 'mvn clean deploy'
+        // 未配置nexus私服
+        // sh 'mvn clean package'
     }
     // 构建后进行代码检查
     stage('code check') {
