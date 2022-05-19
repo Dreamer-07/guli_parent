@@ -191,4 +191,13 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-mine</id>
+            <name>Nexus Snapshot</name>
+            <!-- 快照版本就保存到快照仓库，release版本就保存到 release 仓库 -->
+            <url>http://192.168.102.130:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
