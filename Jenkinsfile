@@ -1,5 +1,6 @@
 node {
-    def selectServiceModules = "${project_name}".spilt(',')
+    def selectedProjects = "${project_name}".split(',')
+
     // 拉取代码
     stage('pull code') {
         steps {
@@ -19,10 +20,10 @@ node {
     stage('code check') {
         def scannerHome = tool 'sonar-scanner-4.2'
         withSonarQubeEnv('sonar-server-7.7') {
-            for(int i = 0; i < selectServiceModules.size(); i++){
-                def serviceModule = selectServiceModules[i]
+            for(int i=0;i<selectedProjects.size();i++){
+                def currentProject = selectedProjects[i]
                 sh """
-                    cd ${serviceModule}  // 进入二级项目，如zuul
+                    cd ${currentProject}  // 进入二级项目，如zuul
                     ${scannerHome}/bin/sonar-scanner // 代码审查
                 """
             }
