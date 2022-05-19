@@ -17,5 +17,16 @@ pipeline {
                 // sh 'mvn clean package'
             }
         }
+        // 构建后进行代码检查
+        stage('code check') {
+            steps {
+                script {
+                    scannerHome = tool 'sonar-scanner-4.2'
+                }
+                withSonarQubeEnv('sonar-server-7.7') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
     }
 }
