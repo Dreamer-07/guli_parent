@@ -24,7 +24,10 @@ pipeline {
                     scannerHome = tool 'sonar-scanner-4.2'
                 }
                 withSonarQubeEnv('sonar-server-7.7') {
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh """
+                        cd ${project_name}  // 进入二级项目，如zuul
+                        ${scannerHome}/bin/sonar-scanner // 代码审查
+                    """
                 }
             }
         }
