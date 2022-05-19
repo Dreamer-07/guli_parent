@@ -17,19 +17,14 @@ node {
     }
     // 构建后进行代码检查
     stage('code check') {
-        steps {
-            script {
-                scannerHome = tool 'sonar-scanner-4.2'
-            }
-            withSonarQubeEnv('sonar-server-7.7') {
-                for(int i = 0; i < selectServiceModules.size(); i++) {
-                    def serviceModule = selectServiceModules[i]
-                    sh """
-                        cd ${serviceModule}  // 进入二级项目，如zuul
-                        ${scannerHome}/bin/sonar-scanner // 代码审查
-                    """
-                }
-
+        def scannerHome = tool 'sonar-scanner-4.2'
+        withSonarQubeEnv('sonar-server-7.7') {
+            for(int i = 0; i < selectServiceModules.size(); i++){
+                def serviceModule = selectServiceModules[i]
+                sh """
+                    cd ${serviceModule}  // 进入二级项目，如zuul
+                    ${scannerHome}/bin/sonar-scanner // 代码审查
+                """
             }
         }
     }
