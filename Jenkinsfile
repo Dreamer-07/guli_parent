@@ -22,7 +22,7 @@ node {
                 scannerHome = tool 'sonar-scanner-4.2'
             }
             withSonarQubeEnv('sonar-server-7.7') {
-                for(int i = 0; i < selectServiceModules.size(); i++{
+                for(int i = 0; i < selectServiceModules.size(); i++) {
                     def serviceModule = selectServiceModules[i]
                     sh """
                         cd ${serviceModule}  // 进入二级项目，如zuul
