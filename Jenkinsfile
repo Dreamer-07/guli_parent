@@ -48,7 +48,7 @@ node {
                 // 登录
                 sh "docker login -u ${username} -p ${password} ${harborUrl}"
                 // 上传镜像
-                sh "docker push ${harborUrl}/${harborProjectName}/${currentProject}:lastest"
+                sh "docker push ${harborUrl}/${harborProjectName}/${currentProject}:latest"
             }
             // 删除本地镜像
             sh "docker rmi -f ${currentProject}"
