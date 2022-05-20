@@ -44,7 +44,7 @@ node {
             // 给 maven 打标签
             sh "docker tag ${currentProject}:latest ${harborUrl}/${harborProjectName}/${currentProject}:latest"
             // 上传到 docker harbor
-            withCredentials([usernamePassword(credentialsId: '8006373f-cf01-4fd0-b217-d2736d09e999', passwordVariable: 'password', usernameVariable: 'username')]) {
+            withCredentials([usernamePassword(credentialsId: '25e54fc4-3711-41e6-b85c-14317c9dc2fc', passwordVariable: 'password', usernameVariable: 'username')]) {
                 // 登录
                 sh "docker login -u ${username} -p ${password} ${harborUrl}"
                 // 上传镜像
