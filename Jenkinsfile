@@ -38,6 +38,9 @@ node {
             def currentProject = selectedProjects[i]
             // 使用 maven 构建本地镜像
             sh "mvn -f ${currentProject} dockerfile:build"
+            if (currentProject.contains('/')) {
+                currentProject = currentProject.split('/')[1]
+            }
             // 给 maven 打标签
             sh "docker tag ${currentProject}:lastest ${harborUrl}/${harborProjectName}/${currentProject}:lastest"
             // 上传到 docker harbor
