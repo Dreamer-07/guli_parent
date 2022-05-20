@@ -16,7 +16,7 @@ node {
             // (无 nexus) 项目打包
             // sh 'mvn -f ${currentProject} clean install'
             // (有 nexus) 项目打包
-            sh 'mvn -f ${currentProject} clean deploy'
+            sh "mvn -f ${currentProject} clean deploy"
         }
     }
     // 构建后进行代码检查
