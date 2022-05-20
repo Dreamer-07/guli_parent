@@ -7,18 +7,16 @@ node {
     }
     // 构建项目并上传的服务器上
     stage('project build') {
-        steps {
-            // (无 nexus) 安装公共依赖
-            // sh 'mvn -f guli-common clean install'
-            // (有 nexus) 安装公共依赖
-            sh 'mvn -f guli-common clean deploy'
-            for(int i=0;i<selectedProjects.size();i++){
-                def currentProject = selectedProjects[i]
-                // (无 nexus) 项目打包
-                // sh 'mvn -f ${currentProject} clean install'
-                // (有 nexus) 项目打包
-                sh 'mvn -f ${currentProject} clean deploy'
-            }
+        // (无 nexus) 安装公共依赖
+        // sh 'mvn -f guli-common clean install'
+        // (有 nexus) 安装公共依赖
+        sh 'mvn -f guli-common clean deploy'
+        for(int i=0;i<selectedProjects.size();i++){
+            def currentProject = selectedProjects[i]
+            // (无 nexus) 项目打包
+            // sh 'mvn -f ${currentProject} clean install'
+            // (有 nexus) 项目打包
+            sh 'mvn -f ${currentProject} clean deploy'
         }
     }
     // 构建后进行代码检查
