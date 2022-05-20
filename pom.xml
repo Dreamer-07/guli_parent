@@ -191,7 +191,6 @@
         </dependencies>
     </dependencyManagement>
 
-
     <distributionManagement>
         <snapshotRepository>
             <id>nexus-mine</id>
