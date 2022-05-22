@@ -33,7 +33,7 @@ node {
         }
     }
     // 生成镜像
-    stage('generate image') {
+    stage('docker project deploy') {
         for (int i = 0; i < selectedProjects.size(); i++) {
 
             def currentProject = selectedProjects[i]
@@ -61,7 +61,7 @@ node {
             sh "docker rmi -f ${harborUrl}/${harborProjectName}/${currentProject}:latest"
 
             // 发布命令到远程服务器
-            sshPublisher(publishers: [sshPublisherDesc(configName: 'jenkins-prod-1', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '/opt/jenkins_shell/deploy.sh $harborUrl $harborProjectName $currentProject', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'jenkins-prod-1', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/opt/jenkins_shell/deploy.sh $harborUrl $harborProjectName $currentProject", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
     }
 }
